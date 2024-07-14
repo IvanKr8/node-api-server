@@ -1,0 +1,29 @@
+services:
+  server:
+    container_name: server
+    build:
+      context: .
+      dockerfile: Dockerfile
+    hostname: server
+    env_file:
+      - ./.env
+    ports:
+      - "$PORT:$PORT"
+    depends_on:
+      server_db:
+        condition: service_healthy
+
+  server_db:
+    image: mongo:latest
+    container_name: server_db
+    env_file:
+      - ./.env
+    ports:
+      - "$DB_PORT:$DB_PORT"
+    volumes:
+      - ./init/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    healthcheck:
+      test: ["CMD-SHELL", "ls /data/db"]
+      interval: 20s
+      timeout: 5s
+      retries: 3
