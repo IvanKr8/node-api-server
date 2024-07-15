@@ -11,9 +11,9 @@ router.get("/products", async (req, res) => {
     }
 });
 
-router.get("/product/:ProductId", async (req, res) => {
+router.get("/product/:productId", async (req, res) => {
     const productId = req.params.productId;
-
+    console.log(productId);
     try {
         const product = await service.getProductById(productId);
         if (!product) {
