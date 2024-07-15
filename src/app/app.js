@@ -4,7 +4,8 @@ const Product = require("../db/db_schemes");
 
 router.get("/products", async (req, res) => {
     try {
-
+        const products = await Product.find();
+        res.status(200).send(products);
     } catch (error) {
         responseError(res, 500, { error: 'Internal server error' })
     }
